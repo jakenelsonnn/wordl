@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         //set up the file path string for stats.txt
         statsFilePath = getApplicationContext().getFilesDir() + "/" + "stats.txt";
+        File file = new File(statsFilePath);
 
         //populate the square array with empties
         for(int i = 0; i < 30; i++){
