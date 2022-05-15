@@ -64,6 +64,19 @@ public class MainActivity extends AppCompatActivity {
         statsFilePath = getApplicationContext().getFilesDir() + "/" + "stats.txt";
         File file = new File(statsFilePath);
 
+        //stats file has not been written to yet, so write all 0s to it
+        if(file.length() == 0){
+            FileWriter writer = null;
+            try {
+                writer = new FileWriter(statsFilePath);
+                for(int i = 0; i < 7; i++) {
+                    writer.append("0\n");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         //populate the square array with empties
         for(int i = 0; i < 30; i++){
             squares.add(new Square('\0', "grey"));
