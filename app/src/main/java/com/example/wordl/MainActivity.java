@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //populate the square array with empties
-        for(int i = 0; i < 25; i++){
+        for(int i = 0; i < 30; i++){
             squares.add(new Square('\0', "grey"));
         }
 
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void guessWord(String guess, int position){
         numGuesses++;
-        if(numGuesses < 5){
+        if(numGuesses < 6){
             if(!guess.equals(word)){
                 for(int i = 0; i < 5; i++) {
                     squares.get(position + i).setLetter(guess.charAt(i));
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Toast.makeText(getApplicationContext(), "you did it!!", Toast.LENGTH_LONG).show();
             }
-        }else if(numGuesses == 5){
+        }else if(numGuesses == 6 && !guess.equals(word)){
             Toast.makeText(getApplicationContext(), "out of guesses. The word was: " + word, Toast.LENGTH_LONG).show();
             for(int i = 0; i < 5; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
@@ -161,6 +161,12 @@ public class MainActivity extends AppCompatActivity {
                     squares.get(position + i).setColor("orange");
                 }
             }
+        }else if(numGuesses == 6 && guess.equals(word)){ //correct guess
+            for(int i = 0; i < 5; i++){
+                squares.get(position + i).setLetter(guess.charAt(i));
+                squares.get(position + i).setColor("green");
+            }
+            Toast.makeText(getApplicationContext(), "you did it!!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -186,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        for(int i = 0; i < 25; i++){
+        for(int i = 0; i < 30; i++){
             squares.get(i).setLetter('\0');
             squares.get(i).setColor("gray");
         }
