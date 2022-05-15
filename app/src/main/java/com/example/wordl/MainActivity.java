@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private int position = 0;
     private CustomAdapter customAdapter;
     private GridView gridView;
+    private EditText guessEditText;
+    private int numGuesses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,10 @@ public class MainActivity extends AppCompatActivity {
 
         //populate the square array with empties
         for(int i = 0; i < 25; i++){
-            squares.add(new Square('\0'));
+            squares.add(new Square('\0', "grey"));
         }
+
+        numGuesses = 0;
 
         //setup the adapter with the gridview and the array
         gridView = findViewById(R.id.grid);
@@ -59,27 +63,44 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //setup the text entry area
-        EditText guessEditText = findViewById(R.id.guessEditText);
+        guessEditText = findViewById(R.id.guessEditText);
 
+        //set up the guess button
         Button guessButton = (Button) findViewById(R.id.guess);
         guessButton.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 String guessText = String.valueOf(guessEditText.getText());
-                guessWord(guessText, position);
-                position = position + 5;
-                refresh();
-                Toast.makeText(getApplicationContext(), word, Toast.LENGTH_LONG).show();
+                if(guessText.length() != 5){
+                    Toast.makeText(getApplicationContext(), "please enter a five letter word!", Toast.LENGTH_LONG).show();
+                }else{
+                    guessWord(guessText, position);
+                    position = position + 5;
+                    refresh();
+                    guessEditText.setText("");
+                }
+            }
+        });
+
+        //set up the clear button
+        Button clearButton = (Button) findViewById(R.id.clear);
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restart();
             }
         });
     }
 
     private String generateWord() throws FileNotFoundException {
         String word = "";
-        Random rand = new Random();
 
-        //word count in words.txt is 8548
-        int randIndex = rand.nextInt(8548);
+        int wordCount = 8548;
+        Random rand = new Random();
+        int randIndex = rand.nextInt(wordCount);
         BufferedReader reader = null;
+
+        //read the file and get the word
         try{
             reader = new BufferedReader(new InputStreamReader(getAssets().open("words.txt")));
             for(int i = 0; i != randIndex; i++){
@@ -87,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }catch(Exception e){
-            randIndex = 69696969;
+            //log the exception
         }
         finally{
             if (reader != null) {
@@ -99,14 +120,43 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Toast.makeText(getApplicationContext(), word, Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), word, Toast.LENGTH_LONG).show();
         return word;
     }
 
     private void guessWord(String guess, int position){
-        if(!guess.equals(word)){
+        numGuesses++;
+        if(numGuesses < 5){
+            if(!guess.equals(word)){
+                for(int i = 0; i < 5; i++) {
+                    squares.get(position + i).setLetter(guess.charAt(i));
+
+                    if(word.charAt(i) == guess.charAt(i)) {
+                        squares.get(position + i).setColor("green");
+                    }
+                    else if(word.contains(String.valueOf(guess.charAt(i)))){
+                        squares.get(position + i).setColor("orange");
+                    }
+                }
+            }
+            else{ //correct guess
+                for(int i = 0; i < 5; i++){
+                    squares.get(position + i).setLetter(guess.charAt(i));
+                    squares.get(position + i).setColor("green");
+                }
+                Toast.makeText(getApplicationContext(), "you did it!!", Toast.LENGTH_LONG).show();
+            }
+        }else if(numGuesses == 5){
+            Toast.makeText(getApplicationContext(), "out of guesses. The word was: " + word, Toast.LENGTH_LONG).show();
             for(int i = 0; i < 5; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
+
+                if(word.charAt(i) == guess.charAt(i)) {
+                    squares.get(position + i).setColor("green");
+                }
+                else if(word.contains(String.valueOf(guess.charAt(i)))){
+                    squares.get(position + i).setColor("orange");
+                }
             }
         }
     }
@@ -119,6 +169,27 @@ public class MainActivity extends AppCompatActivity {
                 gridView.invalidate();
             }
         });
+    }
 
+    private void restart(){
+        //reset index
+        position = 0;
+        numGuesses = 0;
+
+        //re-generate the word
+        try {
+            word = generateWord();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        for(int i = 0; i < 25; i++){
+            squares.get(i).setLetter('\0');
+            squares.get(i).setColor("gray");
+        }
+
+        //refresh the grid, clear the text box
+        refresh();
+        guessEditText.setText("");
     }
 }

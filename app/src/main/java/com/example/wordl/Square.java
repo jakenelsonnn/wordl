@@ -3,9 +3,11 @@ package com.example.wordl;
 public class Square {
 
     private char letter;
+    private String color;
 
-    Square(char letter) {
+    Square(char letter, String color) {
         this.letter = letter;
+        this.color = color;
     }
 
     public char getLetter() {
@@ -14,6 +16,15 @@ public class Square {
 
     public void setLetter(char letter) {
         this.letter = letter;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color)
+    {
+        this.color = color;
     }
 }
 

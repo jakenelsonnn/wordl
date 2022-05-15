@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Square">
-        <attr name="showText" format="boolean"/>
+        <attr name="color" format="color"/>
         <attr name="letter" format="string"/>
     </declare-styleable>
 </resources>

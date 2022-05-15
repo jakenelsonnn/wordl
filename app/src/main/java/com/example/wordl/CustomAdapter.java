@@ -1,6 +1,7 @@
 package com.example.wordl;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +45,29 @@ public class CustomAdapter extends ArrayAdapter<Square> {
         Square square = squares.get(position);
         TextView textView = v.findViewById(R.id.textView);
         textView.setText(String.valueOf(square.getLetter()));
+        ConstraintLayout background = v.findViewById(R.id.square);
+
+        switch (square.getColor()){
+            case "gray":
+            {
+                background.setBackgroundColor(Color.GRAY);
+                break;
+            }
+            case "green":
+            {
+                background.setBackgroundColor(Color.GREEN);
+                break;
+            }
+            case "orange":
+            {
+                background.setBackgroundColor(Color.rgb(255, 165, 0));
+                break;
+            }
+            default:
+            {
+                background.setBackgroundColor(Color.GRAY);
+            }
+        }
 
         return v;
     }
