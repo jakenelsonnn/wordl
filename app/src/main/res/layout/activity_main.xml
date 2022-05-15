@@ -56,5 +56,68 @@
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/guessEditText"
             app:layout_constraintTop_toBottomOf="@+id/grid" />
+
+        <TextView
+            android:id="@+id/onewins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:text="1 guess wins:  "
+            app:layout_constraintTop_toBottomOf="@+id/guessEditText"
+            tools:layout_editor_absoluteX="31dp" />
+
+        <TextView
+            android:id="@+id/twowins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="2 guess wins:  "
+            app:layout_constraintTop_toBottomOf="@+id/onewins"
+            tools:layout_editor_absoluteX="31dp" />
+
+        <TextView
+            android:id="@+id/threewins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="3 guess wins:  "
+            app:layout_constraintTop_toBottomOf="@+id/twowins"
+            tools:layout_editor_absoluteX="31dp" />
+
+        <TextView
+            android:id="@+id/fourwins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="4 guess wins:  "
+            app:layout_constraintTop_toBottomOf="@+id/threewins"
+            tools:layout_editor_absoluteX="31dp" />
+
+        <TextView
+            android:id="@+id/fivewins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="5 guess wins:  "
+            app:layout_constraintTop_toBottomOf="@+id/fourwins"
+            tools:layout_editor_absoluteX="31dp" />
+
+        <TextView
+            android:id="@+id/sixwins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="6 guess wins:  "
+            app:layout_constraintTop_toBottomOf="@+id/fivewins"
+            tools:layout_editor_absoluteX="31dp" />
+
+        <TextView
+            android:id="@+id/losses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Losses:  "
+            app:layout_constraintTop_toBottomOf="@+id/sixwins"
+            tools:layout_editor_absoluteX="31dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

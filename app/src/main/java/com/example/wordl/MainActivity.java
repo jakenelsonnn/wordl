@@ -2,30 +2,31 @@ package com.example.wordl;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.renderscript.ScriptGroup;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wordl.databinding.ActivityMainBinding;
-
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,15 +35,33 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Square> squares = new ArrayList<>();
     private int position = 0;
+    private int numGuesses;
+
     private CustomAdapter customAdapter;
     private GridView gridView;
     private EditText guessEditText;
-    private int numGuesses;
+
+    private TextView oneWinsText;
+    private TextView twoWinsText;
+    private TextView threeWinsText;
+    private TextView fourWinsText;
+    private TextView fiveWinsText;
+    private TextView sixWinsText;
+    private TextView lossesText;
+
+    private String statsFilePath;
+
+
+    //stats
+    private int oneWins = 0, twoWins = 0, threeWins = 0, fourWins = 0, fiveWins = 0, sixWins = 0, losses = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //set up the file path string for stats.txt
+        statsFilePath = getApplicationContext().getFilesDir() + "/" + "stats.txt";
 
         //populate the square array with empties
         for(int i = 0; i < 30; i++){
@@ -56,6 +75,19 @@ public class MainActivity extends AppCompatActivity {
         gridView = findViewById(R.id.grid);
         customAdapter = new CustomAdapter(this, R.layout.square, squares);
         gridView.setAdapter(customAdapter);
+
+        //set up the stats text boxes
+        oneWinsText = (TextView) findViewById(R.id.onewins);
+        twoWinsText = (TextView) findViewById(R.id.twowins);
+        threeWinsText = (TextView) findViewById(R.id.threewins);
+        fourWinsText = (TextView) findViewById(R.id.fourwins);
+        fiveWinsText = (TextView) findViewById(R.id.fivewins);
+        sixWinsText = (TextView) findViewById(R.id.sixwins);
+        lossesText = (TextView) findViewById(R.id.losses);
+
+
+        //updateStatsFile();
+        updateStatsOnScreen();
 
         //pick a random word from words.txt
         try {
@@ -148,9 +180,15 @@ public class MainActivity extends AppCompatActivity {
                     squares.get(position + i).setColor("green");
                 }
                 Toast.makeText(getApplicationContext(), "you did it!!", Toast.LENGTH_LONG).show();
+                updateStats(numGuesses);
+                updateStatsFile();
+                updateStatsOnScreen();
             }
         }else if(numGuesses == 6 && !guess.equals(word)){
             Toast.makeText(getApplicationContext(), "out of guesses. The word was: " + word, Toast.LENGTH_LONG).show();
+            updateStats(7);
+            updateStatsFile();
+            updateStatsOnScreen();
             for(int i = 0; i < 5; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
 
@@ -167,6 +205,9 @@ public class MainActivity extends AppCompatActivity {
                 squares.get(position + i).setColor("green");
             }
             Toast.makeText(getApplicationContext(), "you did it!!", Toast.LENGTH_LONG).show();
+            updateStats(numGuesses);
+            updateStatsFile();
+            updateStatsOnScreen();
         }
     }
 
@@ -201,5 +242,97 @@ public class MainActivity extends AppCompatActivity {
         //refresh the grid, clear the text box
         refresh();
         guessEditText.setText("");
+    }
+
+    private void updateStatsOnScreen(){
+
+        BufferedReader reader = null;
+        try{
+            reader = new BufferedReader(new FileReader(statsFilePath));
+            oneWins = Integer.parseInt(reader.readLine());
+            twoWins = Integer.parseInt(reader.readLine());
+            threeWins = Integer.parseInt(reader.readLine());
+            fourWins = Integer.parseInt(reader.readLine());
+            fiveWins = Integer.parseInt(reader.readLine());
+            sixWins = Integer.parseInt(reader.readLine());
+            losses = Integer.parseInt(reader.readLine());
+
+            oneWinsText.setText(new StringBuilder().append("1 guess wins: ").append(0).toString());
+            twoWinsText.setText(new StringBuilder().append("2 guess wins: ").append(twoWins).toString());
+            threeWinsText.setText(new StringBuilder().append("3 guess wins: ").append(threeWins).toString());
+            fourWinsText.setText(new StringBuilder().append("4 guess wins: ").append(fourWins).toString());
+            fiveWinsText.setText(new StringBuilder().append("5 guess wins: ").append(fiveWins).toString());
+            sixWinsText.setText(new StringBuilder().append("6 guess wins: ").append(sixWins).toString());
+            lossesText.setText(new StringBuilder().append("losses: ").append(losses).toString());
+
+        }catch(Exception e){
+            //log the exception
+        }
+        finally{
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    Log.d("MYTAG: ", "ERROR IN UPDATESTATSONSCREEN");
+                    Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    private void updateStatsFile(){
+
+        //write to the file
+        PrintWriter writer = null;
+        try{
+            writer = new PrintWriter(statsFilePath, "UTF-8");
+            writer.println(oneWins);
+            writer.println(twoWins);
+            writer.println(threeWins);
+            writer.println(fourWins);
+            writer.println(fiveWins);
+            writer.println(sixWins);
+            writer.println(losses);
+        }catch(Exception e){
+            Log.d("MYTAG: ", "ERROR IN UPDATESTATSFILE");
+        }
+        finally{
+            if (writer != null) {
+                writer.close();
+            }
+        }
+    }
+
+    private void updateStats(int n){
+        switch (n) {
+            case 1:{
+                oneWins++;
+                break;
+            }
+            case 2:{
+                twoWins++;
+                break;
+            }
+            case 3:{
+                threeWins++;
+                break;
+            }
+            case 4:{
+                fourWins++;
+                break;
+            }
+            case 5:{
+                fiveWins++;
+                break;
+            }
+            case 6:{
+                sixWins++;
+                break;
+            }
+            case 7:{
+                losses++;
+                break;
+            }
+        }
     }
 }
