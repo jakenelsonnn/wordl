@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             squares.add(new Square('\0', "grey"));
         }
 
+        //keep track of the number of guesses player has made
         numGuesses = 0;
 
         //setup the adapter with the gridview and the array
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         customAdapter = new CustomAdapter(this, R.layout.square, squares);
         gridView.setAdapter(customAdapter);
 
+        //pick a random word from words.txt
         try {
             this.word = generateWord();
         } catch (FileNotFoundException e) {
@@ -122,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
-        //Toast.makeText(getApplicationContext(), word, Toast.LENGTH_LONG).show();
         return word;
     }
 
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void restart(){
-        //reset index
+        //reset index and number of guesses
         position = 0;
         numGuesses = 0;
 
@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //reset the grid
         for(int i = 0; i < 30; i++){
             squares.get(i).setLetter('\0');
             squares.get(i).setColor("gray");
