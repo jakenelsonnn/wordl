@@ -95,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
     private String generateWord() throws FileNotFoundException {
         String word = "";
 
-        int wordCount = 8548;
+        //words.txt has 5754 words, arranged by commonness or something,
+        //but i'm restraining the words to 2800 for a more reasonable word list.
+        //word list from https://github.com/charlesreid1/five-letter-words/blob/master/sgb-words.txt (i removed a few)
+        int wordCount = 2800;
         Random rand = new Random();
         int randIndex = rand.nextInt(wordCount);
         BufferedReader reader = null;
