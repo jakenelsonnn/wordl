@@ -16,12 +16,22 @@ import android.widget.Toast;
 
 import com.example.wordl.databinding.ActivityMainBinding;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
 
 public class MainActivity extends AppCompatActivity {
 
-    private String word = generateWord();
+    private String word = "";
+
+
     private ArrayList<Square> squares = new ArrayList<>();
     private int position = 0;
     private CustomAdapter customAdapter;
@@ -42,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
         customAdapter = new CustomAdapter(this, R.layout.square, squares);
         gridView.setAdapter(customAdapter);
 
+        try {
+            this.word = generateWord();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         //setup the text entry area
         EditText guessEditText = findViewById(R.id.guessEditText);
 
@@ -52,14 +68,39 @@ public class MainActivity extends AppCompatActivity {
                 guessWord(guessText, position);
                 position = position + 5;
                 refresh();
-                Toast.makeText(MainActivity.this, String.valueOf(guessEditText.getText()) + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), word, Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    private String generateWord(){
-        //todo: get random word from words.txt
-        return "alien";
+    private String generateWord() throws FileNotFoundException {
+        String word = "";
+        Random rand = new Random();
+
+        //word count in words.txt is 8548
+        int randIndex = rand.nextInt(8548);
+        BufferedReader reader = null;
+        try{
+            reader = new BufferedReader(new InputStreamReader(getAssets().open("words.txt")));
+            for(int i = 0; i != randIndex; i++){
+                word = reader.readLine();
+            }
+
+        }catch(Exception e){
+            randIndex = 69696969;
+        }
+        finally{
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    //log the exception
+                }
+            }
+        }
+
+        Toast.makeText(getApplicationContext(), word, Toast.LENGTH_LONG).show();
+        return word;
     }
 
     private void guessWord(String guess, int position){
