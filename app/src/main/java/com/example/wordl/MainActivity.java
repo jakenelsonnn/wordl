@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
                 for(int i = 0; i < 7; i++) {
                     writer.append("0\n");
                 }
+                writer.flush();
+                writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
