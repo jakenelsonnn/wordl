@@ -3,6 +3,7 @@ package com.example.wordl;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -138,6 +139,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 restart();
+            }
+        });
+
+        //set up stats button
+        Button yourButton = (Button) findViewById(R.id.statsbutton);
+
+        yourButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, GraphActivity.class));
             }
         });
     }
