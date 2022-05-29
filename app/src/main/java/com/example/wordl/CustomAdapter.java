@@ -50,7 +50,7 @@ public class CustomAdapter extends ArrayAdapter<Square> {
         switch (square.getColor()){
             case "gray":
             {
-                background.setBackgroundColor(Color.GRAY);
+                background.setBackgroundColor(Color.DKGRAY);
                 break;
             }
             case "green":
@@ -65,7 +65,7 @@ public class CustomAdapter extends ArrayAdapter<Square> {
             }
             default:
             {
-                background.setBackgroundColor(Color.GRAY);
+                background.setBackgroundColor(Color.DKGRAY);
             }
         }
 
