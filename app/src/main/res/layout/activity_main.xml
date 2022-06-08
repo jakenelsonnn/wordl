@@ -60,86 +60,40 @@
             app:layout_constraintStart_toEndOf="@+id/guessEditText"
             app:layout_constraintTop_toBottomOf="@+id/grid" />
 
+        <Button
+            android:id="@+id/statsbutton"
+            android:layout_width="66dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="72dp"
+            android:text="stats"
+            android:textSize="8sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
+
         <TextView
-            android:id="@+id/onewins"
+            android:id="@+id/scoreTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="52dp"
-            android:text="1 guess wins:  "
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="78sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guessEditText" />
 
         <TextView
-            android:id="@+id/twowins"
+            android:id="@+id/scoreLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
-            android:text="2 guess wins:  "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/onewins" />
-
-        <TextView
-            android:id="@+id/threewins"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
-            android:text="3 guess wins:  "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/twowins" />
-
-        <TextView
-            android:id="@+id/fourwins"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
-            android:text="4 guess wins:  "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/threewins" />
-
-        <TextView
-            android:id="@+id/fivewins"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
-            android:text="5 guess wins:  "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fourwins" />
-
-        <TextView
-            android:id="@+id/sixwins"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
-            android:text="6 guess wins:  "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fivewins" />
-
-        <TextView
-            android:id="@+id/losses"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
-            android:text="Losses:  "
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sixwins" />
-
-        <Button
-            android:id="@+id/statsbutton"
-            style="@style/Widget.AppCompat.Button.Small"
-            android:layout_width="66dp"
-            android:layout_height="41dp"
-            android:layout_marginTop="204dp"
-            android:layout_marginEnd="28dp"
-            android:text="stats"
-            android:textSize="8sp"
+            android:layout_marginTop="4dp"
+            android:text="Score"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/clear" />
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

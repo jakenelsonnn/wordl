@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,20 +42,18 @@ public class MainActivity extends AppCompatActivity {
     private CustomAdapter customAdapter;
     private GridView gridView;
     private EditText guessEditText;
-
-    private TextView oneWinsText;
-    private TextView twoWinsText;
-    private TextView threeWinsText;
-    private TextView fourWinsText;
-    private TextView fiveWinsText;
-    private TextView sixWinsText;
-    private TextView lossesText;
+    private TextView scoreTextView;
 
     private String statsFilePath;
 
+    private boolean gameWon = false;
 
     //stats
     private int oneWins = 0, twoWins = 0, threeWins = 0, fourWins = 0, fiveWins = 0, sixWins = 0, losses = 0;
+    private boolean restart = false;
+
+    //points for scoring
+    private int points = 0, currentWordPoints = 0, pointsSubtractionValue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +65,11 @@ public class MainActivity extends AppCompatActivity {
         File file = new File(statsFilePath);
 
         //stats file has not been written to yet, so write all 0s to it
-        if(file.length() == 0){
+        if(file.length() == 0 || restart){
             FileWriter writer = null;
             try {
                 writer = new FileWriter(statsFilePath);
-                for(int i = 0; i < 7; i++) {
+                for(int i = 0; i < 8; i++) {
                     writer.append("0\n");
                 }
                 writer.flush();
@@ -88,23 +87,18 @@ public class MainActivity extends AppCompatActivity {
         //keep track of the number of guesses player has made
         numGuesses = 0;
 
+        //set up the score text view
+        scoreTextView = (TextView) findViewById(R.id.scoreTextView);
+
+        //get the stats and score from file
+        updateStatsFromFile();
+        scoreTextView.setText(new StringBuilder().append(points).toString());
+
         //setup the adapter with the gridview and the array
         gridView = findViewById(R.id.grid);
         customAdapter = new CustomAdapter(this, R.layout.square, squares);
         gridView.setAdapter(customAdapter);
 
-        //set up the stats text boxes
-        oneWinsText = (TextView) findViewById(R.id.onewins);
-        twoWinsText = (TextView) findViewById(R.id.twowins);
-        threeWinsText = (TextView) findViewById(R.id.threewins);
-        fourWinsText = (TextView) findViewById(R.id.fourwins);
-        fiveWinsText = (TextView) findViewById(R.id.fivewins);
-        sixWinsText = (TextView) findViewById(R.id.sixwins);
-        lossesText = (TextView) findViewById(R.id.losses);
-
-
-        //updateStatsFile();
-        updateStatsOnScreen();
 
         //pick a random word from words.txt
         try {
@@ -143,16 +137,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //set up stats button
-        Button yourButton = (Button) findViewById(R.id.statsbutton);
-
-        yourButton.setOnClickListener(new View.OnClickListener(){
+        Button statsButton = (Button) findViewById(R.id.statsbutton);
+        statsButton.setBackgroundColor(Color.rgb(42, 155, 247));
+        statsButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 startActivity(new Intent(MainActivity.this, GraphActivity.class));
             }
         });
     }
 
+    //generates the word to be guessed. also handles getting the words's point value, and the gameWon bool
     private String generateWord() throws FileNotFoundException {
+        gameWon = false;
         String word = "";
 
         //words.txt has 5754 words, arranged by commonness or something,
@@ -161,9 +157,13 @@ public class MainActivity extends AppCompatActivity {
         int wordCount = 2800;
         Random rand = new Random();
         int randIndex = rand.nextInt(wordCount);
-        BufferedReader reader = null;
+
+        //points value of word is its index in the file
+        currentWordPoints = randIndex;
+        pointsSubtractionValue = (int) (currentWordPoints * .15);
 
         //read the file and get the word
+        BufferedReader reader = null;
         try{
             reader = new BufferedReader(new InputStreamReader(getAssets().open("words.txt")));
             for(int i = 0; i != randIndex; i++){
@@ -187,11 +187,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void guessWord(String guess, int position){
         numGuesses++;
-        if(numGuesses < 6){
-            if(!guess.equals(word)){
-                for(int i = 0; i < 5; i++) {
-                    squares.get(position + i).setLetter(guess.charAt(i));
 
+        if(numGuesses < 6){
+            if(!guess.equals(word)){ //incorrect guess
+                for(int i = 0; i < 5; i++) {
+                    //put the letters on the squares
+                    squares.get(position + i).setLetter(guess.charAt(i));
+                    //set colors of squares
                     if(word.charAt(i) == guess.charAt(i)) {
                         squares.get(position + i).setColor("green");
                     }
@@ -199,25 +201,35 @@ public class MainActivity extends AppCompatActivity {
                         squares.get(position + i).setColor("orange");
                     }
                 }
+                //decrement the number of points earned
+                currentWordPoints -= pointsSubtractionValue;
             }
             else{ //correct guess
                 for(int i = 0; i < 5; i++){
                     squares.get(position + i).setLetter(guess.charAt(i));
                     squares.get(position + i).setColor("green");
                 }
+
+                //congrats
                 Toast.makeText(getApplicationContext(), "you did it!!", Toast.LENGTH_LONG).show();
+
+                //increment score and stats
+                points += currentWordPoints;
+                scoreTextView.setText(new StringBuilder().append(points).toString());
                 updateStats(numGuesses);
                 updateStatsFile();
-                updateStatsOnScreen();
+                gameWon = true;
             }
-        }else if(numGuesses == 6 && !guess.equals(word)){
+        }else if(numGuesses == 6 && !guess.equals(word)){ //incorrect guess and out of guesses
             Toast.makeText(getApplicationContext(), "out of guesses. The word was: " + word, Toast.LENGTH_LONG).show();
+
+            //set score to 0 and update stats
+            points = 0;
             updateStats(7);
             updateStatsFile();
-            updateStatsOnScreen();
+
             for(int i = 0; i < 5; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
-
                 if(word.charAt(i) == guess.charAt(i)) {
                     squares.get(position + i).setColor("green");
                 }
@@ -225,18 +237,25 @@ public class MainActivity extends AppCompatActivity {
                     squares.get(position + i).setColor("orange");
                 }
             }
-        }else if(numGuesses == 6 && guess.equals(word)){ //correct guess
+        }else if(numGuesses == 6 && guess.equals(word)){ //correct guess on the last guess
             for(int i = 0; i < 5; i++){
                 squares.get(position + i).setLetter(guess.charAt(i));
                 squares.get(position + i).setColor("green");
             }
+
+            //congrats
             Toast.makeText(getApplicationContext(), "you did it!!", Toast.LENGTH_LONG).show();
+
+            //update score and stats
+            points += currentWordPoints;
+            scoreTextView.setText(new StringBuilder().append(points).toString());
             updateStats(numGuesses);
             updateStatsFile();
-            updateStatsOnScreen();
+            gameWon = true;
         }
     }
 
+    //refresh the grid
     private void refresh(){
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -251,6 +270,10 @@ public class MainActivity extends AppCompatActivity {
         //reset index and number of guesses
         position = 0;
         numGuesses = 0;
+
+        //if restart mid-game, player loses score
+        if(!gameWon) points = 0;
+        scoreTextView.setText(new StringBuilder().append(points).toString());
 
         //re-generate the word
         try {
@@ -270,7 +293,8 @@ public class MainActivity extends AppCompatActivity {
         guessEditText.setText("");
     }
 
-    private void updateStatsOnScreen(){
+    //read the file and update the score text view
+    private void updateStatsFromFile(){
 
         BufferedReader reader = null;
         try{
@@ -282,14 +306,10 @@ public class MainActivity extends AppCompatActivity {
             fiveWins = Integer.parseInt(reader.readLine());
             sixWins = Integer.parseInt(reader.readLine());
             losses = Integer.parseInt(reader.readLine());
+            points = Integer.parseInt(reader.readLine());
 
-            oneWinsText.setText(new StringBuilder().append("1 guess wins: ").append(0).toString());
-            twoWinsText.setText(new StringBuilder().append("2 guess wins: ").append(twoWins).toString());
-            threeWinsText.setText(new StringBuilder().append("3 guess wins: ").append(threeWins).toString());
-            fourWinsText.setText(new StringBuilder().append("4 guess wins: ").append(fourWins).toString());
-            fiveWinsText.setText(new StringBuilder().append("5 guess wins: ").append(fiveWins).toString());
-            sixWinsText.setText(new StringBuilder().append("6 guess wins: ").append(sixWins).toString());
-            lossesText.setText(new StringBuilder().append("losses: ").append(losses).toString());
+            //set score text view to score
+            scoreTextView.setText(points);
 
         }catch(Exception e){
             //log the exception
@@ -306,9 +326,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //save stats on a text file
     private void updateStatsFile(){
-
-        //write to the file
         PrintWriter writer = null;
         try{
             writer = new PrintWriter(statsFilePath, "UTF-8");
@@ -319,6 +338,7 @@ public class MainActivity extends AppCompatActivity {
             writer.println(fiveWins);
             writer.println(sixWins);
             writer.println(losses);
+            writer.println(points);
         }catch(Exception e){
             Log.d("MYTAG: ", "ERROR IN UPDATESTATSFILE");
         }
