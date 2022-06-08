@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
 
         //set up the guess button
         Button guessButton = (Button) findViewById(R.id.guess);
+        guessButton.setBackgroundColor(Color.rgb(42, 155, 247));
         guessButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
         //set up the clear button
         Button clearButton = (Button) findViewById(R.id.clear);
+        clearButton.setBackgroundColor(Color.rgb(255, 165, 0));
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                     squares.get(position + i).setLetter(guess.charAt(i));
                     //set colors of squares
                     if(word.charAt(i) == guess.charAt(i)) {
-                        squares.get(position + i).setColor("green");
+                        squares.get(position + i).setColor("blue");
                     }
                     else if(word.contains(String.valueOf(guess.charAt(i)))){
                         squares.get(position + i).setColor("orange");
@@ -207,11 +209,11 @@ public class MainActivity extends AppCompatActivity {
             else{ //correct guess
                 for(int i = 0; i < 5; i++){
                     squares.get(position + i).setLetter(guess.charAt(i));
-                    squares.get(position + i).setColor("green");
+                    squares.get(position + i).setColor("blue");
                 }
 
                 //congrats
-                Toast.makeText(getApplicationContext(), "you did it!!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Well done! +" + Integer.toString(currentWordPoints) + " points earned.", Toast.LENGTH_LONG).show();
 
                 //increment score and stats
                 points += currentWordPoints;
@@ -231,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < 5; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
                 if(word.charAt(i) == guess.charAt(i)) {
-                    squares.get(position + i).setColor("green");
+                    squares.get(position + i).setColor("blue");
                 }
                 else if(word.contains(String.valueOf(guess.charAt(i)))){
                     squares.get(position + i).setColor("orange");
@@ -240,11 +242,11 @@ public class MainActivity extends AppCompatActivity {
         }else if(numGuesses == 6 && guess.equals(word)){ //correct guess on the last guess
             for(int i = 0; i < 5; i++){
                 squares.get(position + i).setLetter(guess.charAt(i));
-                squares.get(position + i).setColor("green");
+                squares.get(position + i).setColor("blue");
             }
 
             //congrats
-            Toast.makeText(getApplicationContext(), "you did it!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Well done! +" + Integer.toString(currentWordPoints) + " points earned.", Toast.LENGTH_LONG).show();
 
             //update score and stats
             points += currentWordPoints;

@@ -53,9 +53,9 @@ public class CustomAdapter extends ArrayAdapter<Square> {
                 background.setBackgroundColor(Color.DKGRAY);
                 break;
             }
-            case "green":
+            case "blue":
             {
-                background.setBackgroundColor(Color.GREEN);
+                background.setBackgroundColor(Color.rgb(42, 155, 247));
                 break;
             }
             case "orange":
