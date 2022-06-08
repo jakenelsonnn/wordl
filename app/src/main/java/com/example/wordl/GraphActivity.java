@@ -23,6 +23,8 @@ public class GraphActivity extends AppCompatActivity {
 
     ArrayList dataList = new ArrayList();
     TextView totalTextView;
+    TextView highScoreTextView;
+    private int highScore = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,12 @@ public class GraphActivity extends AppCompatActivity {
                 dataList.add(new BarEntry(i, n));
                 totalGamesPlayed += n;
             }
+            //skip over current score line
+            reader.readLine();
+
+            //get high score
+            highScore = Integer.parseInt(reader.readLine());
+
         }catch (Exception e){
 
         }
@@ -93,5 +101,9 @@ public class GraphActivity extends AppCompatActivity {
         //display the total number of games played
         totalTextView = findViewById(R.id.totalgamesplayed);
         totalTextView.setText(Integer.toString(totalGamesPlayed));
+
+        //display high score
+        highScoreTextView = findViewById(R.id.highscore);
+        highScoreTextView.setText(Integer.toString(highScore));
     }
 }

@@ -33,26 +33,51 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/totalgamesplayedheader"
-        android:layout_width="wrap_content"
+        android:id="@+id/totalgamesplayed"
+        android:layout_width="146dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Total Games Played"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="28dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintTop_toBottomOf="@+id/totalgamesplayedheader" />
+
+    <TextView
+        android:id="@+id/highscore"
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="8dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/highscoreheader" />
+
+    <TextView
+        android:id="@+id/highscoreheader"
+        android:layout_width="146dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:text="High Score"
+        android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/barchart" />
 
     <TextView
-        android:id="@+id/totalgamesplayed"
-        android:layout_width="wrap_content"
+        android:id="@+id/totalgamesplayedheader"
+        android:layout_width="146dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="0"
-        android:textSize="28sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
+        android:padding="8dp"
+        android:text="Total Games Played"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/totalgamesplayedheader" />
+        app:layout_constraintTop_toBottomOf="@+id/barchart" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

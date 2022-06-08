@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean restart = false;
 
     //points for scoring
-    private int points = 0, currentWordPoints = 0, pointsSubtractionValue = 0;
+    private int points = 0, currentWordPoints = 0, pointsSubtractionValue = 0, highScore = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
             FileWriter writer = null;
             try {
                 writer = new FileWriter(statsFilePath);
-                for(int i = 0; i < 8; i++) {
+                for(int i = 0; i < 9; i++) {
                     writer.append("0\n");
                 }
                 writer.flush();
@@ -217,9 +217,16 @@ public class MainActivity extends AppCompatActivity {
 
                 //increment score and stats
                 points += currentWordPoints;
+
+                //write score to screen
                 scoreTextView.setText(new StringBuilder().append(points).toString());
+
                 updateStats(numGuesses);
-                updateStatsFile();
+
+                //set high score if necessary
+                if(points > highScore)  highScore = points;
+                updateStatsFile(true);
+
                 gameWon = true;
             }
         }else if(numGuesses == 6 && !guess.equals(word)){ //incorrect guess and out of guesses
@@ -228,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
             //set score to 0 and update stats
             points = 0;
             updateStats(7);
-            updateStatsFile();
+            updateStatsFile(false);
 
             for(int i = 0; i < 5; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
@@ -250,9 +257,15 @@ public class MainActivity extends AppCompatActivity {
 
             //update score and stats
             points += currentWordPoints;
+
+            //write score to screen
             scoreTextView.setText(new StringBuilder().append(points).toString());
+
             updateStats(numGuesses);
-            updateStatsFile();
+
+            //set high score if necessary
+            if(points > highScore)  highScore = points;
+            updateStatsFile(true);
             gameWon = true;
         }
     }
@@ -274,7 +287,12 @@ public class MainActivity extends AppCompatActivity {
         numGuesses = 0;
 
         //if restart mid-game, player loses score
-        if(!gameWon) points = 0;
+        if(!gameWon){
+            points = 0;
+
+        }
+        updateStatsFile(true);
+        //write score to screen
         scoreTextView.setText(new StringBuilder().append(points).toString());
 
         //re-generate the word
@@ -309,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
             sixWins = Integer.parseInt(reader.readLine());
             losses = Integer.parseInt(reader.readLine());
             points = Integer.parseInt(reader.readLine());
+            highScore = Integer.parseInt(reader.readLine());
 
             //set score text view to score
             scoreTextView.setText(points);
@@ -329,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //save stats on a text file
-    private void updateStatsFile(){
+    private void updateStatsFile(boolean updateHighScore){
         PrintWriter writer = null;
         try{
             writer = new PrintWriter(statsFilePath, "UTF-8");
@@ -341,6 +360,8 @@ public class MainActivity extends AppCompatActivity {
             writer.println(sixWins);
             writer.println(losses);
             writer.println(points);
+            if(updateHighScore) writer.println(highScore);
+
         }catch(Exception e){
             Log.d("MYTAG: ", "ERROR IN UPDATESTATSFILE");
         }
