@@ -2,7 +2,6 @@ package com.example.wordl;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,17 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,10 +43,14 @@ public class MainActivity extends AppCompatActivity {
 
     private String statsFilePath;
 
+    private final int WORDLIMIT = 3000;
+
     private boolean gameWon = false;
 
     //stats
     private int oneWins = 0, twoWins = 0, threeWins = 0, fourWins = 0, fiveWins = 0, sixWins = 0, losses = 0;
+
+    //in case i need to restart the save data
     private boolean restart = false;
 
     //points for scoring
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         statsFilePath = getApplicationContext().getFilesDir() + "/" + "stats.txt";
         File file = new File(statsFilePath);
 
-        //stats file has not been written to yet, so write all 0s to it
+        //stats file has not been written to yet (or i need to reset save data), so write all 0s to it
         if(file.length() == 0 || restart){
             FileWriter writer = null;
             try {
@@ -117,8 +118,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String guessText = String.valueOf(guessEditText.getText());
-                if(guessText.length() != 5){
-                    Toast.makeText(getApplicationContext(), "please enter a five letter word!", Toast.LENGTH_LONG).show();
+                if(guessText.length() != 5 || !isOnlyChars(guessText) || !isWordInList(guessText)){
+                    Toast.makeText(getApplicationContext(), "Not in word list.", Toast.LENGTH_LONG).show();
                 }else{
                     guessWord(guessText, position);
                     position = position + 5;
@@ -134,7 +135,10 @@ public class MainActivity extends AppCompatActivity {
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                restart();
+                if(numGuesses != 0) restart();
+                else{
+                    Toast.makeText(getApplicationContext(), "Grid is empty.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -154,11 +158,10 @@ public class MainActivity extends AppCompatActivity {
         String word = "";
 
         //words.txt has 5754 words, arranged by commonness or something,
-        //but i'm restraining the words to 2800 for a more reasonable word list.
+        //but i'm restricting the words to 2800 for a more reasonable word list.
         //word list from https://github.com/charlesreid1/five-letter-words/blob/master/sgb-words.txt (i removed a few)
-        int wordCount = 2800;
         Random rand = new Random();
-        int randIndex = rand.nextInt(wordCount);
+        int randIndex = rand.nextInt(WORDLIMIT);
 
         //points value of word is its index in the file
         currentWordPoints = randIndex;
@@ -187,8 +190,12 @@ public class MainActivity extends AppCompatActivity {
         return word;
     }
 
+    //guess word from string in text input
     private void guessWord(String guess, int position){
         numGuesses++;
+
+        //force lowercase
+        guess = guess.toLowerCase();
 
         if(numGuesses < 6){
             if(!guess.equals(word)){ //incorrect guess
@@ -212,11 +219,17 @@ public class MainActivity extends AppCompatActivity {
                     squares.get(position + i).setColor("blue");
                 }
 
-                //congrats
-                Toast.makeText(getApplicationContext(), "Well done! +" + Integer.toString(currentWordPoints) + " points earned.", Toast.LENGTH_LONG).show();
-
                 //increment score and stats
                 points += currentWordPoints;
+
+                //single guess bonus
+                if(numGuesses == 1) points += 3000;
+
+                //two guess bonus
+                if(numGuesses == 2) points += 1000;
+
+                //congrats
+                Toast.makeText(getApplicationContext(), "Well done! +" + Integer.toString(currentWordPoints) + " points earned.", Toast.LENGTH_LONG).show();
 
                 //write score to screen
                 scoreTextView.setText(new StringBuilder().append(points).toString());
@@ -225,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //set high score if necessary
                 if(points > highScore)  highScore = points;
-                updateStatsFile(true);
+                updateStatsFile();
 
                 gameWon = true;
             }
@@ -235,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             //set score to 0 and update stats
             points = 0;
             updateStats(7);
-            updateStatsFile(false);
+            updateStatsFile();
 
             for(int i = 0; i < 5; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
@@ -265,7 +278,9 @@ public class MainActivity extends AppCompatActivity {
 
             //set high score if necessary
             if(points > highScore)  highScore = points;
-            updateStatsFile(true);
+
+            //save stats
+            updateStatsFile();
             gameWon = true;
         }
     }
@@ -281,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //restarts the game, regenerates word, reset score if word hasn't been guessed
     private void restart(){
         //reset index and number of guesses
         position = 0;
@@ -291,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
             points = 0;
 
         }
-        updateStatsFile(true);
+        updateStatsFile();
         //write score to screen
         scoreTextView.setText(new StringBuilder().append(points).toString());
 
@@ -348,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //save stats on a text file
-    private void updateStatsFile(boolean updateHighScore){
+    private void updateStatsFile(){
         PrintWriter writer = null;
         try{
             writer = new PrintWriter(statsFilePath, "UTF-8");
@@ -360,7 +376,7 @@ public class MainActivity extends AppCompatActivity {
             writer.println(sixWins);
             writer.println(losses);
             writer.println(points);
-            if(updateHighScore) writer.println(highScore);
+            writer.println(highScore);
 
         }catch(Exception e){
             Log.d("MYTAG: ", "ERROR IN UPDATESTATSFILE");
@@ -372,6 +388,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //update the stats variables
     private void updateStats(int n){
         switch (n) {
             case 1:{
@@ -403,5 +420,29 @@ public class MainActivity extends AppCompatActivity {
                 break;
             }
         }
+    }
+
+    //to ensure input string is only chars
+    private boolean isOnlyChars(String word) {
+        char[] chars = word.toCharArray();
+        for (char c : chars) {
+            if(!Character.isLetter(c)) return false;
+        }
+        return true;
+    }
+
+    //checks if string is in the word file
+    private boolean isWordInList(String word) {
+        word = word.toLowerCase();
+        BufferedReader reader = null;
+        try{
+            reader = new BufferedReader(new InputStreamReader(getAssets().open("words.txt")));
+            for(int i = 0; i != WORDLIMIT; i++){
+                if(word.equals(reader.readLine())) return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

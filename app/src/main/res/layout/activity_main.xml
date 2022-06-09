@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:backgroundTint="#BF3D3D"
+            android:capitalize="none"
             android:ems="10"
             android:inputType="textPersonName"
             android:textAlignment="center"

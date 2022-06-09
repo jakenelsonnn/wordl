@@ -5,7 +5,8 @@
     android:id="@+id/square"
     android:layout_width="35dp"
     android:layout_height="35dp"
-    android:background="@color/cardview_dark_background">
+    android:background="@color/cardview_dark_background"
+    android:outlineProvider="paddedBounds">
 
 
     <TextView

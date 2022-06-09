@@ -75,10 +75,12 @@ public class GraphActivity extends AppCompatActivity {
         barChart.getAxisLeft().setDrawGridLines(false);
         barChart.getXAxis().setDrawGridLines(false);
 
+        //text stuff
         barDataSet.setValueTextColor(Color.WHITE);
         barDataSet.setValueTextSize(16f);
-        barChart.setDragEnabled(false);
 
+        //tidy up
+        barChart.setDragEnabled(false);
         barChart.getDescription().setEnabled(false);
 
         //bottom labels
