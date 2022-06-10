@@ -1,7 +1,5 @@
 package com.example.wordl;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +13,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,10 +24,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class SixLetterActivity extends AppCompatActivity {
 
     private String word = "";
 
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String statsFilePath;
 
-    private final int WORDLIMIT = 3000;
+    private final int WORDLIMIT = 1508;
 
     private boolean gameWon = false;
 
@@ -59,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.six_letter_activity);
 
         //set up the file path string for stats.txt
-        statsFilePath = getApplicationContext().getFilesDir() + "/" + "stats.txt";
+        statsFilePath = getApplicationContext().getFilesDir() + "/" + "six-letter-stats.txt";
         File file = new File(statsFilePath);
 
         //stats file has not been written to yet (or i need to reset save data), so write all 0s to it
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //populate the square array with empties
-        for(int i = 0; i < 30; i++){
+        for(int i = 0; i < 36; i++){
             squares.add(new Square('\0', "grey"));
         }
 
@@ -89,19 +88,19 @@ public class MainActivity extends AppCompatActivity {
         numGuesses = 0;
 
         //set up the score text view
-        scoreTextView = (TextView) findViewById(R.id.scoreTextView);
+        scoreTextView = (TextView) findViewById(R.id.scoreTextView2);
 
         //get the stats and score from file
         updateStatsFromFile();
         scoreTextView.setText(new StringBuilder().append(points).toString());
 
         //setup the adapter with the gridview and the array
-        gridView = findViewById(R.id.grid);
+        gridView = findViewById(R.id.grid2);
         customAdapter = new CustomAdapter(this, R.layout.square, squares);
         gridView.setAdapter(customAdapter);
 
 
-        //pick a random word from words.txt
+        //pick a random word from six-letter-words.txt
         try {
             this.word = generateWord();
         } catch (FileNotFoundException e) {
@@ -109,20 +108,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //setup the text entry area
-        guessEditText = findViewById(R.id.guessEditText);
+        guessEditText = findViewById(R.id.guessEditText2);
 
         //set up the guess button
-        Button guessButton = (Button) findViewById(R.id.guess);
+        Button guessButton = (Button) findViewById(R.id.guess2);
         guessButton.setBackgroundColor(Color.rgb(42, 155, 247));
         guessButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String guessText = String.valueOf(guessEditText.getText());
-                if(guessText.length() != 5 || !isOnlyChars(guessText) || !isWordInList(guessText)){
+                if(guessText.length() != 6 || !isOnlyChars(guessText) || !isWordInList(guessText)){
                     Toast.makeText(getApplicationContext(), "Not in word list.", Toast.LENGTH_LONG).show();
                 }else{
                     guessWord(guessText, position);
-                    position = position + 5;
+                    position = position + 6;
                     refresh();
                     guessEditText.setText("");
                 }
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //set up the clear button
-        Button clearButton = (Button) findViewById(R.id.clear);
+        Button clearButton = (Button) findViewById(R.id.clear2);
         clearButton.setBackgroundColor(Color.rgb(255, 165, 0));
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,23 +142,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //set up stats button
-        Button statsButton = (Button) findViewById(R.id.statsbutton);
+        Button statsButton = (Button) findViewById(R.id.statsbutton2);
         statsButton.setBackgroundColor(Color.rgb(42, 155, 247));
         statsButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(MainActivity.this, GraphActivity.class));
+                startActivity(new Intent(SixLetterActivity.this, SixLetterGraphActivity.class));
             }
         });
 
-        //set up Six Letter Game button
-        Button sixLetterGameButton = (Button) findViewById(R.id.sixlettergamebutton);
-        sixLetterGameButton.setBackgroundColor(Color.rgb(42, 155, 247));
-        sixLetterGameButton.setOnClickListener(new View.OnClickListener(){
+        //set up Five Letter Game button
+        Button fiveLetterGameButton = (Button) findViewById(R.id.fivelettergamebutton);
+        fiveLetterGameButton.setBackgroundColor(Color.rgb(42, 155, 247));
+        fiveLetterGameButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(MainActivity.this, SixLetterActivity.class));
+                startActivity(new Intent(SixLetterActivity.this, MainActivity.class));
             }
         });
-
     }
 
     //generates the word to be guessed. also handles getting the words's point value, and the gameWon bool
@@ -167,9 +165,6 @@ public class MainActivity extends AppCompatActivity {
         gameWon = false;
         String word = "";
 
-        //words.txt has 5754 words, arranged by commonness or something,
-        //but i'm restricting the words to 2800 for a more reasonable word list.
-        //word list from https://github.com/charlesreid1/five-letter-words/blob/master/sgb-words.txt (i removed a few)
         Random rand = new Random();
         int randIndex = rand.nextInt(WORDLIMIT);
 
@@ -180,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         //read the file and get the word
         BufferedReader reader = null;
         try{
-            reader = new BufferedReader(new InputStreamReader(getAssets().open("words.txt")));
+            reader = new BufferedReader(new InputStreamReader(getAssets().open("six-letter-words.txt")));
             for(int i = 0; i != randIndex; i++){
                 word = reader.readLine();
             }
@@ -209,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(numGuesses < 6){
             if(!guess.equals(word)){ //incorrect guess
-                for(int i = 0; i < 5; i++) {
+                for(int i = 0; i < 6; i++) {
                     //put the letters on the squares
                     squares.get(position + i).setLetter(guess.charAt(i));
                     //set colors of squares
@@ -224,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 currentWordPoints -= pointsSubtractionValue;
             }
             else{ //correct guess
-                for(int i = 0; i < 5; i++){
+                for(int i = 0; i < 6; i++){
                     squares.get(position + i).setLetter(guess.charAt(i));
                     squares.get(position + i).setColor("blue");
                 }
@@ -260,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
             updateStats(7);
             updateStatsFile();
 
-            for(int i = 0; i < 5; i++) {
+            for(int i = 0; i < 6; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
                 if(word.charAt(i) == guess.charAt(i)) {
                     squares.get(position + i).setColor("blue");
@@ -270,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }else if(numGuesses == 6 && guess.equals(word)){ //correct guess on the last guess
-            for(int i = 0; i < 5; i++){
+            for(int i = 0; i < 6; i++){
                 squares.get(position + i).setLetter(guess.charAt(i));
                 squares.get(position + i).setColor("blue");
             }
@@ -315,7 +310,6 @@ public class MainActivity extends AppCompatActivity {
         //if restart mid-game, player loses score
         if(!gameWon){
             points = 0;
-
         }
         updateStatsFile();
         //write score to screen
@@ -329,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //reset the grid
-        for(int i = 0; i < 30; i++){
+        for(int i = 0; i < 36; i++){
             squares.get(i).setLetter('\0');
             squares.get(i).setColor("gray");
         }
@@ -446,7 +440,7 @@ public class MainActivity extends AppCompatActivity {
         word = word.toLowerCase();
         BufferedReader reader = null;
         try{
-            reader = new BufferedReader(new InputStreamReader(getAssets().open("words.txt")));
+            reader = new BufferedReader(new InputStreamReader(getAssets().open("six-letter-words.txt")));
             for(int i = 0; i != WORDLIMIT; i++){
                 if(word.equals(reader.readLine())) return true;
             }

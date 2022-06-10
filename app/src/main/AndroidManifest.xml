@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wordl">
         <activity
+            android:name=".SixLetterGraphActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SixLetterActivity"
+            android:exported="true" />
+        <activity
             android:name=".GraphActivity"
             android:exported="true" />
         <activity
