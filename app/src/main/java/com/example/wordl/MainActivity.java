@@ -336,7 +336,6 @@ public class MainActivity extends AppCompatActivity {
         //if restart mid-game, player loses score
         if(!gameWon){
             points = 0;
-
         }
         updateStatsFile();
         //write score to screen
