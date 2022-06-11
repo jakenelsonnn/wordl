@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wordl">
         <activity
+            android:name=".FiveLetterLineChartActivity"
+            android:exported="true" />
+        <activity
+            android:name=".FourLetterGraphActivity"
+            android:exported="true" />
+        <activity
+            android:name=".FourLetterActivity"
+            android:exported="true" />
+        <activity
             android:name=".SixLetterGraphActivity"
             android:exported="true" />
         <activity

@@ -7,41 +7,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
-        tools:context=".MainActivity">
+        tools:context=".FourLetterActivity">
 
         <Button
-            android:id="@+id/fourlettergamebutton"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="Four Letter Game"
-            android:textSize="8sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.256"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/statsbutton" />
-
-        <Button
-            android:id="@+id/clear"
+            android:id="@+id/clear3"
             android:layout_width="66dp"
             android:layout_height="41dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:text="clear"
             android:textSize="8sp"
-            app:layout_constraintStart_toEndOf="@+id/guess"
-            app:layout_constraintTop_toBottomOf="@+id/grid" />
+            app:layout_constraintStart_toEndOf="@+id/guess3"
+            app:layout_constraintTop_toBottomOf="@+id/grid3" />
 
         <GridView
-            android:id="@+id/grid"
+            android:id="@+id/grid3"
             android:layout_width="350dp"
             android:layout_height="300dp"
             android:layout_margin="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:horizontalSpacing="10dp"
-            android:numColumns="5"
+            android:numColumns="4"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:verticalSpacing="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.544"
@@ -49,7 +38,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/guessEditText"
+            android:id="@+id/guessEditText3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -61,47 +50,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.154"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/grid" />
+            app:layout_constraintTop_toBottomOf="@+id/grid3" />
 
         <Button
-            android:id="@+id/guess"
+            android:id="@+id/guess3"
             android:layout_width="50dp"
             android:layout_height="41dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:text="go"
             android:textSize="8sp"
-            app:layout_constraintStart_toEndOf="@+id/guessEditText"
-            app:layout_constraintTop_toBottomOf="@+id/grid" />
+            app:layout_constraintStart_toEndOf="@+id/guessEditText3"
+            app:layout_constraintTop_toBottomOf="@+id/grid3" />
 
         <Button
-            android:id="@+id/statsbutton"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="56dp"
+            android:id="@+id/statsbutton3"
+            android:layout_width="66dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="52dp"
             android:text="stats"
             android:textSize="8sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.254"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
-
-        <Button
-            android:id="@+id/historybutton"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
-            android:layout_marginEnd="8dp"
-            android:text="history"
-            android:textSize="8sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.789"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/scoreTextView3" />
 
         <TextView
-            android:id="@+id/scoreTextView"
+            android:id="@+id/scoreTextView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -111,10 +86,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guessEditText" />
+            app:layout_constraintTop_toBottomOf="@+id/guessEditText3" />
 
         <TextView
-            android:id="@+id/scoreLabel"
+            android:id="@+id/scoreLabel2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -122,19 +97,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/scoreTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/scoreTextView3" />
 
         <Button
-            android:id="@+id/sixlettergamebutton"
-            android:layout_width="120dp"
+            android:id="@+id/fivelettergamebutton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:text="Six Letter Game"
+            android:layout_marginTop="8dp"
+            android:text="Five Letter Game"
             android:textSize="8sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.788"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/statsbutton" />
+            app:layout_constraintTop_toBottomOf="@+id/statsbutton3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,38 +1,37 @@
 package com.example.wordl;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 
-public class GraphActivity extends AppCompatActivity {
+public class FourLetterGraphActivity extends AppCompatActivity {
 
     ArrayList dataList = new ArrayList();
     TextView totalTextView;
     TextView highScoreTextView;
     private int highScore = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
+        setContentView(R.layout.four_letter_activity_graph);
         int totalGamesPlayed = 0;
+
         //set up the stats file, build array from file contents, total up the numbers in the file.
-        String statsFilePath = getApplicationContext().getFilesDir() + "/" + "stats.txt";
+        String statsFilePath = getApplicationContext().getFilesDir() + "/" + "four-letter-stats.txt";
         BufferedReader reader = null;
         try{
             reader = new BufferedReader(new FileReader(statsFilePath));
@@ -52,7 +51,7 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         //set up the bar chart
-        BarChart barChart = findViewById(R.id.barchart);
+        BarChart barChart = findViewById(R.id.barchart3);
         BarDataSet barDataSet = new BarDataSet(dataList, "Stats");
         BarData barData = new BarData(barDataSet);
         barChart.setData(barData);
@@ -100,11 +99,11 @@ public class GraphActivity extends AppCompatActivity {
         xAxis.setGranularityEnabled(true);
 
         //display the total number of games played
-        totalTextView = findViewById(R.id.totalgamesplayed);
+        totalTextView = findViewById(R.id.totalgamesplayed3);
         totalTextView.setText(Integer.toString(totalGamesPlayed));
 
         //display high score
-        highScoreTextView = findViewById(R.id.highscore);
+        highScoreTextView = findViewById(R.id.highscore3);
         highScoreTextView.setText(Integer.toString(highScore));
     }
 }
