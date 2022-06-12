@@ -19,3 +19,7 @@ https://github.com/first20hours/google-10000-english/blob/master/google-10000-en
 For the graphing features, I used this library:
 
 https://github.com/PhilJay/MPAndroidChart
+
+
+##The App
+![Screenshot](screenshots/Five-letter-game-screenshot.png)
