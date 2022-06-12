@@ -21,5 +21,5 @@ For the graphing features, I used this library:
 https://github.com/PhilJay/MPAndroidChart
 
 
-##The App
-![Screenshot](screenshots/Five-letter-game-screenshot.png)
+## The App
+![Screenshot](screenshots/Five-letter-game-screenshot.jpg)
