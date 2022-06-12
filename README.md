@@ -13,6 +13,7 @@ for the app to be installed.
 
 ### Resources
 For the words for the four and six letter games, I used this wordlist:
+
 https://github.com/first20hours/google-10000-english/blob/master/google-10000-english-usa.txt
 
 For the graphing features, I used this library.
