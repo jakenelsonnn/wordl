@@ -149,15 +149,6 @@ public class FourLetterActivity extends AppCompatActivity {
                 startActivity(new Intent(FourLetterActivity.this, FourLetterGraphActivity.class));
             }
         });
-
-        //set up Five Letter Game button
-        Button fiveLetterGameButton = (Button) findViewById(R.id.fivelettergamebutton);
-        fiveLetterGameButton.setBackgroundColor(Color.rgb(42, 155, 247));
-        fiveLetterGameButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(FourLetterActivity.this, MainActivity.class));
-            }
-        });
     }
 
     //generates the word to be guessed. also handles getting the words's point value, and the gameWon bool
