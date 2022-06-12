@@ -56,7 +56,7 @@ This graph shows the number of games you've won by the number of guesses it took
 
 ## History ("Mosaic") - Five Letter Game
 
-![Screenshot](screenshots/Five-letter-game-history-screenshot.jpg)
+![Screenshot](screenshots/five-letter-game-history-screenshot.jpg)
 
 This is a work in progress. This is a grid that shows the game history: each square is a game you have played, colored by how many guesses (or grey if the game was lost). In the order of 1 through 6 guesses, the colors of the squares are blue, green, yellow, yellow-orange, orange, red. I will add a header/title to this page and likely a "key" as well (similar to the one on the graph page.
 
