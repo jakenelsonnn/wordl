@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         historyButton.setBackgroundColor(Color.rgb(42, 155, 247));
         historyButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(MainActivity.this, FiveLetterLineChartActivity.class));
+                startActivity(new Intent(MainActivity.this, FiveLetterHistoryActivity.class));
             }
         });
 
@@ -411,7 +411,7 @@ public class MainActivity extends AppCompatActivity {
         }catch(Exception e){
             Log.d("MYTAG: ", "ERROR IN UPDATESTATSFILE");
         }
-        finally{
+        finally {
             if (writer != null) {
                 writer.close();
             }
