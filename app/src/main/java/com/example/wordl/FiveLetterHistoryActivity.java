@@ -22,15 +22,9 @@ public class FiveLetterHistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_five_letter_history);
+
         //set up the file
         historyFilePath = getApplicationContext().getFilesDir() + "/" + "five-letter-history.txt";
-
-        /*
-        //populate the square array with empties
-        for(int i = 0; i < 150; i++){
-            squares.add(new HistorySquare("blue"));
-        }
-        */
 
         BufferedReader reader = null;
         try{
@@ -42,9 +36,7 @@ public class FiveLetterHistoryActivity extends AppCompatActivity {
                 squares.add(new HistorySquare(color));
             }
 
-        }catch (Exception e){
-
-        }
+        }catch (Exception e){ }
 
         //set up the adapter and the gridview
         gridView = findViewById(R.id.historygrid);
@@ -52,30 +44,31 @@ public class FiveLetterHistoryActivity extends AppCompatActivity {
         gridView.setAdapter(historySquareAdapter);
     }
 
+    //I know. I don't like this either.
     private String getColorFromInt(int n)
     {
         switch (n)
         {
             case 1:{
-                return "blue";
+                return "OneGuessColor";
             }
             case 2:{
-                return "green";
+                return "TwoGuessColor";
             }
             case 3:{
-                return "yellow";
+                return "ThreeGuessColor";
             }
             case 4:{
-                return "orangeish";
+                return "FourGuessColor";
             }
             case 5:{
-                return "orange";
+                return "FiveGuessColor";
             }
             case 6:{
-                return "red";
+                return "SixGuessColor";
             }
             default:{
-                return "grey";
+                return "LossColor";
             }
         }
     }

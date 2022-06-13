@@ -43,41 +43,49 @@ public class HistorySquareAdapter extends ArrayAdapter<HistorySquare> {
 
         HistorySquare square = squares.get(position);
         ConstraintLayout background = v.findViewById(R.id.historysquare);
+        TextView number = v.findViewById((R.id.historysquaretextview));
 
         switch (square.getColor()){
-            case "blue":
+            case "OneGuessColor":
             {
-                background.setBackgroundColor(Color.rgb(27, 152, 224));
+                background.setBackgroundColor(Color.rgb(163, 163, 255));
+                number.setText("1");
                 break;
             }
-            case "green":
+            case "TwoGuessColor":
             {
-                background.setBackgroundColor(Color.rgb(31, 222, 85));
+                background.setBackgroundColor(Color.rgb(16, 52, 166));
+                number.setText("2");
                 break;
             }
-            case "yellow":
+            case "ThreeGuessColor":
             {
-                background.setBackgroundColor(Color.rgb(225, 225, 0));
+                background.setBackgroundColor(Color.rgb(65, 47, 136));
+                number.setText("3");
                 break;
             }
-            case "orangeish":
+            case "FourGuessColor":
             {
-                background.setBackgroundColor(Color.rgb(227, 177, 61));
+                background.setBackgroundColor(Color.rgb(114, 43, 106));
+                number.setText("4");
                 break;
             }
-            case "orange":
+            case "FiveGuessColor":
             {
-                background.setBackgroundColor(Color.rgb(227, 127, 27));
+                background.setBackgroundColor(Color.rgb(162, 38, 75));
+                number.setText("5");
                 break;
             }
-            case "red":
+            case "SixGuessColor":
             {
-                background.setBackgroundColor( Color.rgb(255, 0, 0));
+                background.setBackgroundColor( Color.rgb(246, 45, 45));
+                number.setText("6");
                 break;
             }
-            case "grey":
+            case "LossColor":
             {
-                background.setBackgroundColor( Color.rgb(135, 135, 135));
+                background.setBackgroundColor( Color.rgb(60, 84, 88));
+                number.setText("x");
             }
         }
 
