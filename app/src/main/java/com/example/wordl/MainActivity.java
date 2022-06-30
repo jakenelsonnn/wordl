@@ -15,6 +15,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.card.MaterialCardView;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -155,8 +157,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //set up history button
-        Button historyButton = (Button) findViewById(R.id.historybutton);
-        historyButton.setBackgroundColor(Color.rgb(42, 155, 247));
+        MaterialCardView historyButton = (MaterialCardView) findViewById(R.id.historybutton);
         historyButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 startActivity(new Intent(MainActivity.this, FiveLetterHistoryActivity.class));
@@ -164,8 +165,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //set up Four Letter Game button
-        Button fourLetterGameButton = (Button) findViewById(R.id.fourlettergamebutton);
-        fourLetterGameButton.setBackgroundColor(Color.rgb(42, 155, 247));
+        MaterialCardView fourLetterGameButton = (MaterialCardView) findViewById(R.id.fourlettergamebutton);
         fourLetterGameButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 startActivity(new Intent(MainActivity.this, FourLetterActivity.class));
@@ -173,8 +173,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //set up Six Letter Game button
-        Button sixLetterGameButton = (Button) findViewById(R.id.sixlettergamebutton);
-        sixLetterGameButton.setBackgroundColor(Color.rgb(42, 155, 247));
+        MaterialCardView sixLetterGameButton = (MaterialCardView) findViewById(R.id.sixlettergamebutton);
         sixLetterGameButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 startActivity(new Intent(MainActivity.this, SixLetterActivity.class));
