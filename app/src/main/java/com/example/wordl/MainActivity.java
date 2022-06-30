@@ -148,8 +148,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //set up stats button
-        Button statsButton = (Button) findViewById(R.id.statsbutton);
-        statsButton.setBackgroundColor(Color.rgb(42, 155, 247));
+        MaterialCardView statsButton = (MaterialCardView) findViewById(R.id.statsbutton);
         statsButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 startActivity(new Intent(MainActivity.this, GraphActivity.class));
