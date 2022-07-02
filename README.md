@@ -40,10 +40,12 @@ The wordlist for the five letter games is pretty robust, but the wordlists for t
 
 ![Screenshot](screenshots/Five-letter-game-screenshot.jpg)
 
-* Stats: View a bar chart of the games won for five letter games.
-* History: View the game history "mosaic." (NEW)
 * Four Letter Game: Launch a four letter game.
 * Six Letter Game: Launch a six letter game.
+* History: View the game history "mosaic."
+* Stats: View a bar chart of the games won for five letter games.
+* Themes: Allows you to change the colors on the game grid. Not yet implemented.
+* Settings: Opens a window to change some settings in the game. Not yet implemented.
 
 ## Stats - Five Letter Game
 
@@ -64,4 +66,6 @@ This is a work in progress. This is a grid that shows the game history: each squ
 
 # Features Still Needed
 
-I still need to program the History Mosaics for four and six letter games. Furthermore, the History screens need some labels.
+* 4 and 6 letter game history mosaics
+* Themes
+* Settings
