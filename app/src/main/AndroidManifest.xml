@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Wordl">
         <activity
+            android:name=".ColorsActivity"
+            android:exported="true" />
+        <activity
             android:name=".FiveLetterHistoryActivity"
             android:exported="true" />
         <activity

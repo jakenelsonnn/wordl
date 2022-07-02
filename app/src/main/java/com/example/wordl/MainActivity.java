@@ -1,7 +1,5 @@
 package com.example.wordl;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -15,6 +13,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.card.MaterialCardView;
 
 import java.io.BufferedReader;
@@ -28,13 +27,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
     private String word = "";
-
 
     private ArrayList<Square> squares = new ArrayList<>();
     private int position = 0;
@@ -47,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String statsFilePath, historyFilePath;
 
-    private final int WORDLIMIT = 3000;
+    private final int WORD_LIMIT = 3000;
 
     private boolean gameWon = false;
 
@@ -179,6 +176,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //set up Themes/Color button
+        MaterialCardView themesButton = (MaterialCardView) findViewById(R.id.themesbutton);
+        themesButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                startActivity(new Intent(MainActivity.this, ColorsActivity.class));
+            }
+        });
     }
 
     //generates the word to be guessed. also handles getting the words's point value, and the gameWon bool
@@ -190,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         //but i'm restricting the words to 2800 for a more reasonable word list.
         //word list from https://github.com/charlesreid1/five-letter-words/blob/master/sgb-words.txt (i removed a few)
         Random rand = new Random();
-        int randIndex = rand.nextInt(WORDLIMIT);
+        int randIndex = rand.nextInt(WORD_LIMIT);
 
         //points value of word is its index in the file
         currentWordPoints = randIndex;
@@ -480,7 +484,7 @@ public class MainActivity extends AppCompatActivity {
         BufferedReader reader = null;
         try{
             reader = new BufferedReader(new InputStreamReader(getAssets().open("words.txt")));
-            for(int i = 0; i != WORDLIMIT; i++){
+            for(int i = 0; i != WORD_LIMIT; i++){
                 if(word.equals(reader.readLine())) return true;
             }
         } catch (IOException e) {
