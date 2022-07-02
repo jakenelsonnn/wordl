@@ -6,12 +6,9 @@
     android:layout_width="16dp"
     android:layout_height="16dp"
     android:background="@color/white"
-    android:outlineProvider="paddedBounds"
-    android:clickable="true"
-    android:focusable="true">
+    android:outlineProvider="paddedBounds">
 
     <TextView
-        android:clickable="true"
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:layout_marginStart="2dp"

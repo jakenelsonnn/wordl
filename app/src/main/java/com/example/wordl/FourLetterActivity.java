@@ -40,7 +40,7 @@ public class FourLetterActivity extends AppCompatActivity {
     private EditText guessEditText;
     private TextView scoreTextView;
 
-    private String statsFilePath;
+    private String statsFilePath, colorsFilePath;
 
     private final int WORDLIMIT = 1068;
 
@@ -55,6 +55,9 @@ public class FourLetterActivity extends AppCompatActivity {
     //points for scoring
     private int points = 0, currentWordPoints = 0, pointsSubtractionValue = 0, highScore = 0;
 
+    private int correctPositionColor, wrongPositionColor, defaultColor = Color.rgb(45, 45, 45);
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +65,18 @@ public class FourLetterActivity extends AppCompatActivity {
 
         //set up the file path string for stats.txt
         statsFilePath = getApplicationContext().getFilesDir() + "/" + "four-letter-stats.txt";
-        File file = new File(statsFilePath);
+        colorsFilePath = getApplicationContext().getFilesDir() + "/" + "colors.txt";
+
+        //get the saved colors
+        BufferedReader reader = null;
+        try{
+            reader = new BufferedReader(new FileReader(colorsFilePath));
+            correctPositionColor = Integer.parseInt(reader.readLine());
+            wrongPositionColor = Integer.parseInt(reader.readLine());
+        }catch (Exception e){ }
 
         //stats file has not been written to yet (or i need to reset save data), so write all 0s to it
+        File file = new File(statsFilePath);
         if(file.length() == 0 || restart){
             FileWriter writer = null;
             try {
@@ -81,7 +93,7 @@ public class FourLetterActivity extends AppCompatActivity {
 
         //populate the square array with empties
         for(int i = 0; i < 24; i++){
-            squares.add(new Square('\0', "grey"));
+            squares.add(new Square('\0', defaultColor));
         }
 
         //keep track of the number of guesses player has made
@@ -200,10 +212,10 @@ public class FourLetterActivity extends AppCompatActivity {
                     squares.get(position + i).setLetter(guess.charAt(i));
                     //set colors of squares
                     if(word.charAt(i) == guess.charAt(i)) {
-                        squares.get(position + i).setColor("blue");
+                        squares.get(position + i).setColor(correctPositionColor);
                     }
                     else if(word.contains(String.valueOf(guess.charAt(i)))){
-                        squares.get(position + i).setColor("orange");
+                        squares.get(position + i).setColor(wrongPositionColor);
                     }
                 }
                 //decrement the number of points earned
@@ -212,7 +224,7 @@ public class FourLetterActivity extends AppCompatActivity {
             else{ //correct guess
                 for(int i = 0; i < 4; i++){
                     squares.get(position + i).setLetter(guess.charAt(i));
-                    squares.get(position + i).setColor("blue");
+                    squares.get(position + i).setColor(correctPositionColor);
                 }
 
                 //increment score and stats
@@ -249,16 +261,16 @@ public class FourLetterActivity extends AppCompatActivity {
             for(int i = 0; i < 4; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
                 if(word.charAt(i) == guess.charAt(i)) {
-                    squares.get(position + i).setColor("blue");
+                    squares.get(position + i).setColor(correctPositionColor);
                 }
                 else if(word.contains(String.valueOf(guess.charAt(i)))){
-                    squares.get(position + i).setColor("orange");
+                    squares.get(position + i).setColor(wrongPositionColor);
                 }
             }
         }else if(numGuesses == 6 && guess.equals(word)){ //correct guess on the last guess
             for(int i = 0; i < 4; i++){
                 squares.get(position + i).setLetter(guess.charAt(i));
-                squares.get(position + i).setColor("blue");
+                squares.get(position + i).setColor(correctPositionColor);
             }
 
             //congrats
@@ -316,7 +328,7 @@ public class FourLetterActivity extends AppCompatActivity {
         //reset the grid
         for(int i = 0; i < 24; i++){
             squares.get(i).setLetter('\0');
-            squares.get(i).setColor("gray");
+            squares.get(i).setColor(defaultColor);
         }
 
         //refresh the grid, clear the text box

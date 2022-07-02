@@ -5,10 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -73,5 +76,15 @@ public class ColorsActivity extends AppCompatActivity {
         gridView = findViewById(R.id.colorgrid);
         colorSquareAdapter = new ColorSquareAdapter(this, R.layout.color_square, squares);
         gridView.setAdapter(colorSquareAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                color = squares.get(i).getColor();
+                Intent intent = new Intent();
+                intent.putExtra("color", color);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
     }
 }

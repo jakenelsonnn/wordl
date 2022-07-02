@@ -46,28 +46,7 @@ public class CustomAdapter extends ArrayAdapter<Square> {
         TextView textView = v.findViewById(R.id.textView);
         textView.setText(String.valueOf(square.getLetter()));
         ConstraintLayout background = v.findViewById(R.id.square);
-
-        switch (square.getColor()){
-            case "gray":
-            {
-                background.setBackgroundColor(Color.DKGRAY);
-                break;
-            }
-            case "blue":
-            {
-                background.setBackgroundColor(Color.rgb(42, 155, 247));
-                break;
-            }
-            case "orange":
-            {
-                background.setBackgroundColor(Color.rgb(255, 165, 0));
-                break;
-            }
-            default:
-            {
-                background.setBackgroundColor(Color.DKGRAY);
-            }
-        }
+        background.setBackgroundColor(square.getColor());
 
         return v;
     }

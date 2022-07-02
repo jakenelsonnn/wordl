@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText guessEditText;
     private TextView scoreTextView;
 
-    private String statsFilePath, historyFilePath;
+    private String statsFilePath, historyFilePath, colorsFilePath;
 
     private final int WORD_LIMIT = 3000;
 
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
     //points for scoring
     private int points = 0, currentWordPoints = 0, pointsSubtractionValue = 0, highScore = 0;
 
+    private int correctPositionColor, wrongPositionColor, defaultColor = Color.rgb(45, 45, 45);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +67,24 @@ public class MainActivity extends AppCompatActivity {
         //set up the file path string for stats.txt
         statsFilePath = getApplicationContext().getFilesDir() + "/" + "stats.txt";
         historyFilePath = getApplicationContext().getFilesDir() + "/" + "five-letter-history.txt";
-        File file = new File(statsFilePath);
+        colorsFilePath = getApplicationContext().getFilesDir() + "/" + "colors.txt";
+
+        File file = new File(colorsFilePath);
+        if(file.length() == 0){
+            correctPositionColor = Color.rgb(42, 155, 247);
+            wrongPositionColor = Color.rgb(255, 165, 0);
+        }else {
+            //get the saved colors
+            BufferedReader reader = null;
+            try{
+                reader = new BufferedReader(new FileReader(colorsFilePath));
+                correctPositionColor = Integer.parseInt(reader.readLine());
+                wrongPositionColor = Integer.parseInt(reader.readLine());
+            }catch (Exception e){ }
+        }
 
         //stats file has not been written to yet (or i need to reset save data), so write all 0s to it
+        file = new File(statsFilePath);
         if(file.length() == 0 || restart){
             FileWriter writer = null;
             try {
@@ -84,7 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
         //populate the square array with empties
         for(int i = 0; i < 30; i++){
-            squares.add(new Square('\0', "grey"));
+            Square square = new Square('\0', defaultColor);
+            squares.add(square);
         }
 
         //keep track of the number of guesses player has made
@@ -180,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         MaterialCardView themesButton = (MaterialCardView) findViewById(R.id.themesbutton);
         themesButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(MainActivity.this, ColorsActivity.class));
+                startActivity(new Intent(MainActivity.this, ThemesActivity.class));
             }
         });
     }
@@ -237,10 +255,10 @@ public class MainActivity extends AppCompatActivity {
                     squares.get(position + i).setLetter(guess.charAt(i));
                     //set colors of squares
                     if(word.charAt(i) == guess.charAt(i)) {
-                        squares.get(position + i).setColor("blue");
+                        squares.get(position + i).setColor(correctPositionColor);
                     }
                     else if(word.contains(String.valueOf(guess.charAt(i)))){
-                        squares.get(position + i).setColor("orange");
+                        squares.get(position + i).setColor(wrongPositionColor);
                     }
                 }
                 //decrement the number of points earned
@@ -249,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
             else{ //correct guess
                 for(int i = 0; i < 5; i++){
                     squares.get(position + i).setLetter(guess.charAt(i));
-                    squares.get(position + i).setColor("blue");
+                    squares.get(position + i).setColor(correctPositionColor);
                 }
 
                 //increment score and stats
@@ -286,16 +304,16 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0; i < 5; i++) {
                 squares.get(position + i).setLetter(guess.charAt(i));
                 if(word.charAt(i) == guess.charAt(i)) {
-                    squares.get(position + i).setColor("blue");
+                    squares.get(position + i).setColor(correctPositionColor);
                 }
                 else if(word.contains(String.valueOf(guess.charAt(i)))){
-                    squares.get(position + i).setColor("orange");
+                    squares.get(position + i).setColor(wrongPositionColor);
                 }
             }
         }else if(numGuesses == 6 && guess.equals(word)){ //correct guess on the last guess
             for(int i = 0; i < 5; i++){
                 squares.get(position + i).setLetter(guess.charAt(i));
-                squares.get(position + i).setColor("blue");
+                squares.get(position + i).setColor(correctPositionColor);
             }
 
             //congrats
@@ -353,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
         //reset the grid
         for(int i = 0; i < 30; i++){
             squares.get(i).setLetter('\0');
-            squares.get(i).setColor("gray");
+            squares.get(i).setColor(defaultColor);
         }
 
         //refresh the grid, clear the text box
